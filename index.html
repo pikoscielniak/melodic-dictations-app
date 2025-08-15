@@ -1,1 +1,47 @@
-<h1>Hello world!!!</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melodic Dictation</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@magenta/music@1.23.1"></script>
+</head>
+
+<body>
+    <header class="header" role="banner">
+        <h1 class="app-title">Melodic Dictation</h1>
+    </header>
+    <main class="main" role="main">
+        <div class="content" aria-label="Controls and placeholders">
+            <div class="selectors" style="display:flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">
+                <label for="root-select">Root:</label>
+                <select id="root-select" aria-label="Select root note"></select>
+                <label for="scale-select">Scale:</label>
+                <select id="scale-select" aria-label="Select scale type"></select>
+                <button id="start" class="btn btn-primary" aria-label="Start new dictation">Start new</button>
+            </div>
+            <div id="dictation-params-section" style="display:none; margin-bottom: 1em;">
+                <div id="dictation-params"></div>
+            </div>
+            <ul id="placeholders" class="placeholders" aria-live="polite" aria-label="Generated note placeholders">
+                <!-- Filled dynamically -->
+            </ul>
+            <!-- Scale keyboard -->
+            <div id="keyboard" class="keyboard" role="group" aria-label="Scale keyboard">
+                <!-- Buttons are rendered dynamically -->
+            </div>
+            <div class="actions">
+                <button id="play-dictation" class="btn" disabled aria-disabled="true">Play dictation</button>
+                <button id="pause-dictation" class="btn" disabled aria-disabled="true">Pause</button>
+                <button id="play-cadence" class="btn" disabled aria-disabled="true">Play cadence</button>
+                <button id="show-note" class="btn" disabled aria-disabled="true">Show note</button>
+            </div>
+        </div>
+    </main>
+    <script type="module" src="bundle.js"></script>
+</body>
+
+</html>

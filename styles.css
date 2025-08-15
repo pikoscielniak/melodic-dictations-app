@@ -205,7 +205,9 @@ button[disabled],
     display: grid;
     grid-template-columns: repeat(16, 1fr);
     align-items: end;
-    gap: 0;
+    /* Add a tiny horizontal space so white keys' focus/active outlines don't overlap */
+    column-gap: 4px;
+    row-gap: 0;
 }
 
 .keyboard .kb-row.kb-row--white {

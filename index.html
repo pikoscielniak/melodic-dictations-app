@@ -9,49 +9,99 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="stylesheet" href="styles.css">
+
     <script src="https://cdn.jsdelivr.net/npm/@magenta/music@1.23.1"></script>
 </head>
 
 <body>
     <header class="header" role="banner">
         <h1 class="app-title">Melodic Dictation</h1>
+        <button id="settings-toggle" class="settings-toggle" aria-label="Toggle settings" aria-expanded="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                style="transform: rotate(180deg);">
+                <path d="m6 9 6 6 6-6" />
+            </svg>
+        </button>
     </header>
     <main class="main" role="main">
         <div class="content" aria-label="Controls and placeholders">
-            <div class="selectors" style="display:flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">
-                <label for="root-select">Root:</label>
-                <select id="root-select" aria-label="Select root note"></select>
-                <label for="scale-select">Scale:</label>
-                <select id="scale-select" aria-label="Select scale type"></select>
-                <div class="field field--creativity">
-                    <label for="generation-temperature" class="label-with-hint">
-                        Creativity:
+            <div id="settings-panel" class="settings-panel">
+                <div class="selectors" style="display:flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">
+                    <label for="root-select">Root:</label>
+                    <select id="root-select" aria-label="Select root note"></select>
+                    <label for="scale-select">Scale:</label>
+                    <select id="scale-select" aria-label="Select scale type"></select>
+                    <div class="field field--creativity">
+                        <label for="generation-temperature" class="label-with-hint">
+                            Creativity:
+                        </label>
+                        <input id="generation-temperature" class="select-like" type="number" min="0.1" max="1.5"
+                            step="0.1" value="1" inputmode="decimal" aria-label="Generation temperature"
+                            aria-describedby="temperature-hint" />
                         <span id="temperature-hint" class="hint">(0.1 low, 1.5 high)</span>
-                    </label>
-                    <input id="generation-temperature" class="select-like" type="number" min="0.1" max="1.5" step="0.1"
-                        value="0.6" inputmode="decimal" aria-label="Generation temperature"
-                        aria-describedby="temperature-hint" />
+                    </div>
                 </div>
-                <button id="start" class="btn btn-primary" aria-label="Start new dictation">Start new</button>
             </div>
-            <ul id="placeholders" class="placeholders" aria-live="polite" aria-label="Generated note placeholders">
-                <!-- Filled dynamically -->
-            </ul>
+            <div class="start-section">
+                <button id="start" class="btn btn-primary" aria-label="Start new dictation">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 2v6h6" />
+                        <path d="M3 13a9 9 0 1 0 3-7.7L3 8" />
+                    </svg>
+                    <span class="spinner"></span>
+                    <span class="btn-text">Start New</span>
+                </button>
+            </div>
+            <div class="section">
+                <ul id="placeholders" class="placeholders" aria-live="polite" aria-label="Generated note placeholders">
+                    <!-- Filled dynamically -->
+                </ul>
+            </div>
             <!-- Scale keyboard -->
-            <div id="keyboard" class="keyboard" role="group" aria-label="Scale keyboard">
-                <!-- Buttons are rendered dynamically -->
+            <div class="section">
+                <div id="keyboard" class="keyboard" role="group" aria-label="Scale keyboard">
+                    <!-- Buttons are rendered dynamically -->
+                </div>
             </div>
             <div class="actions">
-                <button id="play-dictation" class="btn" disabled aria-disabled="true">Play dictation</button>
-                <button id="pause-dictation" class="btn" disabled aria-disabled="true">Pause</button>
-                <button id="play-cadence" class="btn" disabled aria-disabled="true">Play cadence</button>
-                <button id="show-note" class="btn" disabled aria-disabled="true">Show note</button>
+                <button id="play-dictation" class="btn btn-action-primary" disabled aria-disabled="true">
+                    <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polygon points="5 3 19 12 5 21 5 3" />
+                    </svg>
+                    <svg id="stop-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" style="display: none;">
+                        <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+                    </svg>
+                    <span>Play dictation</span>
+                </button>
+                <button id="play-cadence" class="btn btn-action-secondary" disabled aria-disabled="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                    </svg>
+                    <span>Cadence</span>
+                </button>
+                <button id="show-note" class="btn btn-action-secondary" disabled aria-disabled="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                        <circle cx="12" cy="12" r="3" />
+                    </svg>
+                    <span>Show note</span>
+                </button>
             </div>
         </div>
     </main>
     <footer class="footer">
-        <p>Version 0.0.6</p>
-        <p>&copy; 2025 pikoscielniak. All rights reserved.</p>
+        <p>Version 0.0.7</p>
+        <p>&copy; 2025 <a href="https://github.com/pikoscielniak" target="_blank" rel="noopener">pikoscielniak</a>. All
+            rights reserved.</p>
     </footer>
     <script type="module" src="bundle.js"></script>
     <script>
@@ -63,6 +113,7 @@
             });
         }
     </script>
+
 </body>
 
 </html>

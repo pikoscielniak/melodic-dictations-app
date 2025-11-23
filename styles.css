@@ -174,59 +174,106 @@ body {
 }
 
 .keyboard {
-    display: grid;
-    grid-auto-rows: auto;
-    gap: 6px;
-    background-color: var(--white);
-    border-radius: 16px;
-    padding: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(to bottom, #8b7355 0%, #6b5a47 100%);
+    border-radius: 8px;
+    padding: 20px 16px 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    height: 160px;
 }
 
 .keyboard .kb-row {
     display: grid;
     grid-template-columns: repeat(16, minmax(0, 1fr));
-    align-items: end;
-    column-gap: 4px;
-    row-gap: 0;
+    column-gap: 0;
+    position: absolute;
+    left: 16px;
+    right: 16px;
 }
 
 .keyboard .kb-row.kb-row--white {
-    padding-top: 4px;
+    bottom: 16px;
+    height: 120px;
+}
+
+.keyboard .kb-row.kb-row--black {
+    bottom: 16px;
+    height: 120px;
 }
 
 .key-btn {
-    padding: 10px 0;
     min-width: 0;
-    border-radius: 8px;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
-    border: 2px solid transparent;
-    font-size: 12px;
+    border: none;
+    font-size: 11px;
     font-weight: 600;
     cursor: pointer;
+    transition: all 0.1s ease;
+    user-select: none;
 }
 
 .key--white {
-    background-color: var(--gray-50);
-    border-color: #e2e8f0;
-    color: var(--gray-700);
+    background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 60%, #e9ecef 100%);
+    color: var(--gray-500);
     grid-column: span 2;
+    height: 100%;
+    padding-bottom: 8px;
+    border: 1px solid #d0d0d0;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15), inset 0 -2px 4px rgba(0, 0, 0, 0.05);
+    position: relative;
+    margin: 0 1px;
+}
+
+.key--white:hover {
+    background: linear-gradient(to bottom, #f8f9fa 0%, #e9ecef 60%, #dee2e6 100%);
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 -1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.key--white:active {
+    background: linear-gradient(to bottom, #e9ecef 0%, #dee2e6 100%);
+    transform: translateY(2px);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .key--black {
-    background-color: var(--slate-900);
+    background: linear-gradient(to bottom, #1a1a1a 0%, #0a0a0a 60%, #000000 100%);
     color: var(--white);
-    z-index: 1;
+    z-index: 2;
     position: relative;
-    grid-column: span 1;
-    margin-bottom: 6px;
+    grid-column: span 2;
+    height: 70px;
+    width: 60%;
+    margin: 0 auto;
+    padding-bottom: 6px;
+    border-radius: 0 0 3px 3px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.6), inset 0 -1px 2px rgba(255, 255, 255, 0.1);
+    border: 1px solid #000;
+    border-top: 1px solid #333;
+    align-self: flex-start;
+}
+
+.key--black:hover {
+    background: linear-gradient(to bottom, #2a2a2a 0%, #1a1a1a 60%, #0a0a0a 100%);
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7), inset 0 -1px 2px rgba(255, 255, 255, 0.15);
+}
+
+.key--black:active {
+    background: linear-gradient(to bottom, #0a0a0a 0%, #000000 100%);
+    transform: translateY(2px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.8), inset 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .key-btn.selected {
-    border-color: var(--purple-500);
-    box-shadow: 0 0 4px rgba(139, 92, 246, 0.3);
+    box-shadow: 0 0 0 3px var(--purple-500), 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.key--black.selected {
+    box-shadow: 0 0 0 3px var(--purple-500), 0 3px 6px rgba(0, 0, 0, 0.6), inset 0 -1px 2px rgba(255, 255, 255, 0.1);
 }
 
 .actions {

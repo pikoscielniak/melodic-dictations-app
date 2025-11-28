@@ -8,21 +8,18 @@
     <meta name="theme-color" content="#111827">
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=2">
 
     <script src="https://cdn.jsdelivr.net/npm/@magenta/music@1.23.1"></script>
 </head>
 
 <body>
     <header class="header" role="banner">
-        <h1 class="app-title">Melodic Dictation</h1>
-        <button id="settings-toggle" class="settings-toggle" aria-label="Toggle settings" aria-expanded="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                style="transform: rotate(180deg);">
-                <path d="m6 9 6 6 6-6" />
-            </svg>
-        </button>
+        <h1 class="app-title">
+            <img src="favicon.png" alt="Logo" class="app-logo">
+            Melodic Dictation
+        </h1>
+
     </header>
     <main class="main" role="main">
         <div class="content" aria-label="Controls and placeholders">
@@ -99,7 +96,7 @@
         </div>
     </main>
     <footer class="footer">
-        <p>Version 0.0.8</p>
+        <p>Version 0.0.9</p>
         <p>&copy; 2025 <a href="https://github.com/pikoscielniak" target="_blank" rel="noopener">pikoscielniak</a>. All
             rights reserved.</p>
     </footer>

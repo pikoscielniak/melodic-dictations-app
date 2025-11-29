@@ -45,7 +45,19 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Cache-first for app shell & assets
+  // Network-first for index.html to ensure updates, cache-first for other assets
+  if (url.pathname === '/' || url.pathname === '/index.html') {
+    event.respondWith(
+      fetch(req).then((res) => {
+        const resClone = res.clone();
+        caches.open('mdict-cache-v1-2def3b0e').then((c) => c.put(req, resClone)).catch(() => {});
+        return res;
+      }).catch(() => caches.match(req))
+    );
+    return;
+  }
+
+  // Cache-first for other app shell & assets
   event.respondWith(
     caches.match(req).then((cached) => cached || fetch(req).then((res) => {
       const resClone = res.clone();

@@ -111,15 +111,32 @@
         </div>
     </main>
     <footer class="footer">
-        <p>Version 0.1.1</p>
+        <p>Version 0.1.2</p>
         <p>&copy; 2025 <a href="https://github.com/pikoscielniak" target="_blank" rel="noopener">pikoscielniak</a>. All
             rights reserved.</p>
     </footer>
     <script type="module" src="bundle.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
+            const APP_VERSION = '0.1.2';
+            const STORED_VERSION = localStorage.getItem('app-version');
+            
+            // If version changed, force unregister old SW and clear caches
+            if (STORED_VERSION && STORED_VERSION !== APP_VERSION) {
+                navigator.serviceWorker.getRegistrations().then((registrations) => {
+                    registrations.forEach((reg) => reg.unregister());
+                });
+                caches.keys().then((names) => {
+                    names.forEach((name) => caches.delete(name));
+                });
+                localStorage.setItem('app-version', APP_VERSION);
+                window.location.reload();
+            } else if (!STORED_VERSION) {
+                localStorage.setItem('app-version', APP_VERSION);
+            }
+
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js?v=0.1.1').then((reg) => {
+                navigator.serviceWorker.register('sw.js').then((reg) => {
                     // Check for updates every 60 seconds
                     setInterval(() => {
                         reg.update();

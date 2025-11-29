@@ -9,11 +9,14 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open('mdict-cache-v1-2def3b0e').then((cache) => cache.addAll(["/index.html","/bundle.js","/styles.css","/favicon.png","/manifest.webmanifest","https://cdn.jsdelivr.net/npm/@magenta/music@1.23.1"]))
   );
+  // Don't wait for user action, prepare to activate immediately
+  self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => Promise.all(keys.map((k) => k === 'mdict-cache-v1-2def3b0e' ? undefined : caches.delete(k))))
+      .then(() => self.clients.claim())
   );
 });
 
@@ -22,8 +25,15 @@ self.addEventListener('fetch', (event) => {
   // Bypass non-GET
   if (req.method !== 'GET') return;
 
-  // Network-then-cache for magenta CDN to keep it fresh, fallback to cache
   const url = new URL(req.url);
+  
+  // NEVER cache sw.js - always fetch from network to detect updates
+  if (url.pathname === '/sw.js') {
+    event.respondWith(fetch(req));
+    return;
+  }
+
+  // Network-then-cache for magenta CDN to keep it fresh, fallback to cache
   if (url.hostname.includes('cdn.jsdelivr.net') || (url.hostname.endsWith('storage.googleapis.com') && url.pathname.includes('/magentadata/'))) {
     event.respondWith(
       fetch(req).then((res) => {

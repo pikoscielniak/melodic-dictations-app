@@ -111,31 +111,19 @@
         </div>
     </main>
     <footer class="footer">
-        <p>Version 0.0.10</p>
+        <p>Version 0.1.0</p>
         <p>&copy; 2025 <a href="https://github.com/pikoscielniak" target="_blank" rel="noopener">pikoscielniak</a>. All
             rights reserved.</p>
     </footer>
     <script type="module" src="bundle.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
-            let newWorker;
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js').then((reg) => {
-                    reg.addEventListener('updatefound', () => {
-                        newWorker = reg.installing;
-                        newWorker.addEventListener('statechange', () => {
-                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                const updateBtn = document.getElementById('update-btn');
-                                if (updateBtn) {
-                                    updateBtn.style.display = 'flex';
-                                    updateBtn.addEventListener('click', () => {
-                                        newWorker.postMessage({ type: 'SKIP_WAITING' });
-                                        window.location.reload();
-                                    });
-                                }
-                            }
-                        });
-                    });
+                    // Check for updates every 60 seconds
+                    setInterval(() => {
+                        reg.update();
+                    }, 60000);
                 }).catch((err) => {
                     console.error('Service Worker registration failed:', err);
                 });
@@ -144,8 +132,14 @@
             let refreshing = false;
             navigator.serviceWorker.addEventListener('controllerchange', () => {
                 if (!refreshing) {
-                    refreshing = true;
-                    window.location.reload();
+                    const updateBtn = document.getElementById('update-btn');
+                    if (updateBtn) {
+                        updateBtn.style.display = 'flex';
+                        updateBtn.addEventListener('click', () => {
+                            refreshing = true;
+                            window.location.reload();
+                        });
+                    }
                 }
             });
         }

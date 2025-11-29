@@ -19,7 +19,22 @@
             <img src="favicon.png" alt="Logo" class="app-logo">
             Melodic Dictation
         </h1>
-
+        <button id="update-btn" class="update-btn" style="display: none;" aria-label="Update to new version">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+            </svg>
+            <span>Update Now</span>
+        </button>
+        <a href="https://buymeacoffee.com/DUKs15mCc" target="_blank" rel="noopener" class="coffee-btn" aria-label="Buy me a coffee">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 8h1a4 4 0 1 1 0 8h-1"></path>
+                <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"></path>
+                <line x1="6" y1="2" x2="6" y2="4"></line>
+                <line x1="10" y1="2" x2="10" y2="4"></line>
+                <line x1="14" y1="2" x2="14" y2="4"></line>
+            </svg>
+            <span>Buy me a coffee</span>
+        </a>
     </header>
     <main class="main" role="main">
         <div class="content" aria-label="Controls and placeholders">
@@ -96,17 +111,42 @@
         </div>
     </main>
     <footer class="footer">
-        <p>Version 0.0.9</p>
+        <p>Version 0.0.10</p>
         <p>&copy; 2025 <a href="https://github.com/pikoscielniak" target="_blank" rel="noopener">pikoscielniak</a>. All
             rights reserved.</p>
     </footer>
     <script type="module" src="bundle.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
+            let newWorker;
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').catch((err) => {
+                navigator.serviceWorker.register('sw.js').then((reg) => {
+                    reg.addEventListener('updatefound', () => {
+                        newWorker = reg.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                const updateBtn = document.getElementById('update-btn');
+                                if (updateBtn) {
+                                    updateBtn.style.display = 'flex';
+                                    updateBtn.addEventListener('click', () => {
+                                        newWorker.postMessage({ type: 'SKIP_WAITING' });
+                                        window.location.reload();
+                                    });
+                                }
+                            }
+                        });
+                    });
+                }).catch((err) => {
                     console.error('Service Worker registration failed:', err);
                 });
+            });
+
+            let refreshing = false;
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (!refreshing) {
+                    refreshing = true;
+                    window.location.reload();
+                }
             });
         }
     </script>

@@ -1,4 +1,10 @@
 // Auto-generated service worker. Do not edit directly.
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open('mdict-cache-v1-2def3b0e').then((cache) => cache.addAll(["/index.html","/bundle.js","/styles.css","/favicon.png","/manifest.webmanifest","https://cdn.jsdelivr.net/npm/@magenta/music@1.23.1"]))

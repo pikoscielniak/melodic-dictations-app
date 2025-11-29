@@ -111,7 +111,7 @@
         </div>
     </main>
     <footer class="footer">
-        <p>Version 0.1.0</p>
+        <p>Version 0.1.1</p>
         <p>&copy; 2025 <a href="https://github.com/pikoscielniak" target="_blank" rel="noopener">pikoscielniak</a>. All
             rights reserved.</p>
     </footer>
@@ -119,7 +119,7 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').then((reg) => {
+                navigator.serviceWorker.register('sw.js?v=0.1.1').then((reg) => {
                     // Check for updates every 60 seconds
                     setInterval(() => {
                         reg.update();
